@@ -1,0 +1,6 @@
+# Ignorar o banco de dados local
+progresso.db
+
+# Ignorar pastas temporárias do Python
+__pycache__/
+*.pyc
