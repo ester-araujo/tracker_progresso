@@ -60,16 +60,41 @@ def get_all_projects():
     conn.close()
     return projects 
 
+def update_project(id, passo_atual, ultima_anotacao=None):
+    """Atualiza o pprogresso de um porjeto"""
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    #Pega data e hora atual
+    data_atual=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+     
+    #SQL pra atualizar o passo atual e a ultima anotação
+    query="""
+            UPDATE progress
+            SET passo_atual = ?, ultima_anotacao = ?, data_atualizacao =?
+            WHERE id = ? 
+            """
+    #passa os valores reais na tupla
+    cursor.execute(query, (passo_atual, ultima_anotacao, data_atual, id))
+
+    conn.commit()
+    conn.close()
+    print(f"Projeto com ID: {id} atualizado.")
+
+def delete_project(id):
+    """Exclui um projeto da tabela"""
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    #SQL para deletar o projeto 
+    query= 'DELETE FROM progress WHERE id =?'
+
+    cursor.execute(query, (id,))
+
+    conn.commit()
+    conn.close()
+    print(f"Projeto com ID: {id} excluido")
+
+
 if __name__ == "__main__":
     create_table() 
-    
-    # Vamos listar os projetos salvos no banco:
-    print("\n--- MEUS PROJETOS ---")
-    lista = get_all_projects()
-    for proj in lista:
-        print(proj)
-
-
-
-
-                   
