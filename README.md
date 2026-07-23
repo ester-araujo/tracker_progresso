@@ -1,4 +1,4 @@
-# ⚡ Study Tracker — Cyberpunk Edition
+# ⚡ Study Tracker Pessoal — Cyberpunk Edition
 
 Um gerenciador de estudos e projetos de alta performance, focado em acompanhamento modular de progresso, desenvolvido com **Python**, **Streamlit** e **SQLite**.
 
