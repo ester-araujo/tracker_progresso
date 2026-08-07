@@ -254,44 +254,64 @@ elif menu == "Estatísticas":
 
         st.markdown("---")
 
-        #---GRAFICOS INTERATIVOS COM PLOTLY---
+       # --- GRÁFICOS INTERATIVOS COM PLOTLY ---
         col_graf1, col_graf2 = st.columns(2)
 
         with col_graf1:
-            #Grafico de barras
+            # Gráfico de Barras: Progresso por Projeto
             fig_barras = px.bar(
                 df,
                 x="progresso_pct",
                 y="titulo",
                 orientation="h",
                 title="Progresso por Projeto (%)",
-                labels={"progresso_pct": "PRogresso (%)","titulo":"Projeto"},
-                color_discrete_sequence=["#FF4191"]
+                labels={"progresso_pct": "Progresso (%)", "titulo": "Projeto"},
+                color_discrete_sequence=["#FF4191"]  # Rosa Neon
             )
-
+            
+            # Força remoção total do fundo preto e texto branco em TUDO
             fig_barras.update_layout(
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0)",
-                font_color="#F4F1EA",
-                xaxis=dict(range=[0, 100], gridcolor="#161224")
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='#FFFFFF', size=14),
+                title_font=dict(color='#FFFFFF', size=18),
+                xaxis=dict(
+                    range=[0, 100], 
+                    gridcolor='#333355', 
+                    tickfont=dict(color='#FFFFFF'),
+                    title_font=dict(color='#FFFFFF')
+                ),
+                yaxis=dict(
+                    tickfont=dict(color='#FFFFFF'),
+                    title_font=dict(color='#FFFFFF')
+                )
             )
-
+            
             st.plotly_chart(fig_barras, use_container_width=True)
 
-            with col_graf2:
-                #Grafico de Rosca
-                fig_rosca =px.pie(
-                    df, 
-                    names="categoria",
-                    title="Distribuição por Categoria",
-                    hole=0.5,
-                    color_discrete_sequence=["#A3FFD6", "#A370F7", "#FF4191", "#F4F1EA"]
-                )
-
-                fig_rosca.update_layout(
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    plot_bgcolor="rgba(0,0,0,0)", 
-                    font_color="#F4F1EA"
-                )
-
-                st.plotly_chart(fig_rosca, use_container_width=True)
+        with col_graf2:
+            # Gráfico de Rosca: Projetos por Categoria
+            fig_rosca = px.pie(
+                df,
+                names="categoria",
+                title="Distribuição por Categoria",
+                hole=0.5,
+                color_discrete_sequence=["#A3FFD6", "#A370F7", "#FF4191", "#F4F1EA"]
+            )
+            
+            # Força remoção total do fundo e texto branco na legenda e centro
+            fig_rosca.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='#FFFFFF', size=14),
+                title_font=dict(color='#FFFFFF', size=18),
+                legend=dict(font=dict(color='#FFFFFF', size=14))
+            )
+            
+            fig_rosca.update_traces(
+                textinfo='percent',
+                insidetextfont=dict(color='#000000', size=14), # Porcentagem dentro do gráfico em preto pra destacar na cor clara
+                outsidetextfont=dict(color='#FFFFFF', size=14)
+            )
+            
+            st.plotly_chart(fig_rosca, use_container_width=True)
