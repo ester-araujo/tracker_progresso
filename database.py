@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+import pandas as pd 
 
 DB_NAME = "progresso.db"
 
@@ -98,3 +99,17 @@ def delete_project(id):
 
 if __name__ == "__main__":
     create_table() 
+
+def get_projects_df():
+    """Retorna todos os projetos como um DataFrame do pandas"""
+    conn = create_connection()
+    #Lê a tabela progresso e retorna como um DataFrame
+    df = pd.read_sql_query("SELECT * FROM progress", conn)
+    conn.close()
+
+    #Se tiver dados, calcula a porcentagem de progresso para os gráficos
+    if not df.empty: 
+        #evita divisão por zero
+        df['porcentagem_progresso'] = (df['passo_atual']/ df['total_passos'] * 100).fillna(0).round(1)
+
+    return df

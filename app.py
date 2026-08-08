@@ -6,7 +6,8 @@ from database import(
      create_table, 
      add_project,
      update_project, 
-     delete_project
+     delete_project,
+     get_projects_df
 )
 
 #Inicia o DB
@@ -53,7 +54,7 @@ st.markdown("""
         }
         
         .stCaption {
-            color: #A370F7 !important; /* Legendas em Electric Lilac */
+            color: #FAF4F1EA !important; /* Legendas em Electric Lilac */
             font-size: 2.2rem !important;
         }
             
@@ -99,6 +100,12 @@ st.markdown("""
         input {
             color:#0d0b18 !important; /* Champanhe Claro */
         }
+            
+        div[data-testid="stExpander"] details summary p {
+            color: #FFFFFF !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -139,7 +146,7 @@ if menu == "Ver Projetos":
                 col1, col2 = st.columns([3, 1])
 
                 with col1:
-                    st.markdown(f"### **{titulo}**")
+                    st.markdown(f"### {titulo}")
                     st.caption(f"Categoria:{categoria} | Atualizado em: {data_}")
                     if ultima_anotacao:
                         st.markdown(f"*Última anotação: {ultima_anotacao}*")
@@ -149,7 +156,7 @@ if menu == "Ver Projetos":
                     st.progress(porcentagem)
     
 # Área de edição e exclusão de projetos
-                with st.expander("Gerenciar Projetos"):
+                with st.expander("Gerenciar Projeto"):
                     col_input, col_note = st.columns([1,2])
 
                     with col_input:
@@ -217,6 +224,7 @@ elif menu == "Adicionar Novo Projeto":
         else:
             #Função para adicionar o projeto no banco de dados
             try: 
+                add_project(titulo, categoria, total_passos)
                 st.success(f"Projeto '{titulo}' adicionado com sucesso!")
             except Exception as e:
                 st.error(f"Erro ao adicionar projeto: {e}")
